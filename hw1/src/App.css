@@ -1,0 +1,52 @@
+.App {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 80vh;
+}
+
+input, .btn {
+	outline: none;
+} 
+
+.input-wrapper {
+	position: relative;
+	margin-bottom: 30px;
+}
+
+input { 
+	width: 300px;
+	height: 20px;
+	padding: 10px;
+	border: 3px solid rgba(0,0,0,.3);
+}
+
+.comment {
+	position: absolute;
+	top: 40px;
+	right: 0; 
+	color: red;
+	font-size: 12px;
+}
+
+.btn { 
+	width: 80px;
+	height: 40px;
+	margin-top: 10px;
+	background: rgba(0,0,0,.3);
+	border: 0;
+	color: gray;
+}
+
+.btn.active {
+	background: rgba(231, 200, 24, 0.781);
+	color: white;
+}
+
+.btn.active:hover {
+	background: rgba(235, 201, 10, 0.952);
+	cursor: pointer;
+}
+
+
