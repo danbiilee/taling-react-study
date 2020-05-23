@@ -2,94 +2,73 @@ import React, { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  state = {
-	email: {
-		value: '',
-		isValid: false,
-		comment: ''
-	},
-	password: {
-		value: '',
-		isValid: false,
-		comment: ''
-	}
-  };
+	state = {
+		email: '',
+		password: ''
+	};
 
-  handleChange = e => {
-	const { name, value } = e.target;
-	let regExp = '';
-	let isValid = false;
-	let comment = '';
+	handleChange = e => {
+		const { name, value } = e.target;
 
-	// 이메일 유효성 검사
-	if (name === 'email') {
-		regExp = /@/;
-		isValid = regExp.test(value);
-		comment = isValid || value.length === 0 ? '' : '@가 포함되어야 합니다.';
-	}
+		this.setState({
+			[name]: value
+		});
+	};
 
-	// 비밀번호 유효성 검사
-	if (name === 'password') {
-		regExp = /(?=.*[A-Z])(?=.*[a-z]).{6,}/;
-		isValid = regExp.test(value);
-
-	}
-
-	if (name === 'password' && !isValid) {
-		if (value.length === 0) {
-			comment = '';
-		} else if (value.length < 6) {
-			comment = '6자리 이상 입력하세요.';
-		} else if (value.search(/[a-z]/) === -1) {
-			comment = '소문자가 1개 이상 포함되어야 합니다.';
-		} else if (value.search(/[A-Z]/) === -1) {
-			comment = '대문자가 1개 이상 포함되어야 합니다.';
+	render () {
+		const { email , password } = this.state;
+		const isValid = {
+			email: false,
+			password: false
 		}
-	}
-
-    this.setState({
-		[name]: {
-			value,
-			isValid, 
-			comment
+		const msg = {
+			email: '',
+			password: ''
 		}
-    });
-  };
+		let disabled = true;
 
-  componentDidUpdate(prevProps, prevState) {
-	const { email, password } = this.state;
-	const btn = document.querySelector('.btn');
+		// 이메일 유효성 검사
+		isValid.email = email.search('@') !== -1 ? true : false;
+		msg.email = isValid.email || email.length === 0 ? '' : '@가 포함되어야 합니다.';
+
+		// 비밀번호 유효성 검사
+		isValid.password = password.search(/(?=.*[A-Z])(?=.*[a-z]).{6,}/) !== -1 ? true : false;
+		if(!isValid.password) {
+			if (password.length === 0) {
+				msg.password = '';
+			} else if (password.length < 6) {
+				msg.password  = '6자리 이상 입력하세요.';
+			} else if (password.search(/[a-z]/) === -1) {
+				msg.password  = '소문자가 1개 이상 포함되어야 합니다.';
+			} else if (password.search(/[A-Z]/) === -1) {
+				msg.password  = '대문자가 1개 이상 포함되어야 합니다.';
+			}
+		}
+
+		// 버튼 활성화 
+		disabled = isValid.email && isValid.password ? false : true;
+		if(!disabled) {
+			document.querySelector('.btn').classList.add('active');
+		}
 	
-	if (email.isValid && password.isValid) {
-		btn.disabled = false;
-		btn.classList.add('active');
-	} else {
-		btn.disabled = true;
-		btn.classList.remove('active');
+		return (
+			<div className="App">
+				<div className="input-wrapper">
+					<input type="text" name="email" placeholder="Enter Email" onChange={this.handleChange}></input>
+					{
+						msg.email !== '' ? <p className="comment">{msg.email}</p> : ''
+					}
+				</div>
+				<div className="input-wrapper">
+					<input type="password" name="password" placeholder="Enter Password" onChange={this.handleChange}></input>
+					{
+						msg.password !== '' ? <p className="comment">{msg.password}</p> : '' 
+					}
+				</div>
+				<button className="btn" disabled={disabled}>submit</button>
+			</div>
+		);
 	}
-  }
-
-  render () {
-	const { email , password } = this.state;
-
-    return (
-      	<div className="App">
-			<div className="input-wrapper">
-				<input type="text" name="email" placeholder="Enter Email" onChange={this.handleChange}></input>
-				{
-					email.comment !== '' ? <p className="comment">{email.comment}</p> : ''
-				}
-			</div>
-			<div className="input-wrapper">
-				<input type="password" name="password" placeholder="Enter Password" onChange={this.handleChange}></input>
-				{
-					password.comment !== '' ? <p className="comment">{password.comment}</p> : '' 
-				}
-			</div>
-        <button className="btn" disabled>submit</button>
-      </div>
-    );
-  }
 }
 
 export default App;
