@@ -1,24 +1,21 @@
 
 ## 🥊🥊 0521. 과제 완료! 🥊🥊
 
----
-
 > 🛠🛠 0522. 수정   
 > 🛠🛠 0528. 수정
 
-
-### 1. state에는 렌더링에 영향을 주는 최소한의 것만 담자!     
+### [피드백]
+#### 1. state에는 렌더링에 영향을 주는 최소한의 것만 담자!     
 isValid나 message도 렌더링에 영향을 주긴 하지만, 
-직접적으로 바뀌는 경우는 없다. 때문에 isValid와 message는 render() 안에서 value에 근거해 계산하는 것이 좋다.    
-그렇게 수정하면 handleChange함수가 본 의도대로 한 가지 일만 할 수 있다는 장점도 생긴다.
+직접적으로 바뀌는 경우는 없다. 때문에 isValid와 message는 render() 안에서 value에 근거해 계산하는 것이 좋다. 그렇게 수정하면 handleChange함수가 본 의도대로 한 가지 일만 할 수 있다는 장점도 생긴다.
 
 📌 state값을 변경하는 동작은 render가 호출되기 전에(class와 render 사이),    
 그 외 돔 상태를 변경하는 동작은 렌더링이 되는 과정?(render와 return 사이)에서 하는 것!!!  
 
-### 2. `querySelector`를 사용하기 보다는 `ref`를 이용해서 DOM을 조작하자. 
+#### 2. `querySelector`를 사용하기 보다는 `ref`를 이용해서 DOM을 조작하자. 
 참조: <https://reactjs.org/docs/refs-and-the-dom.html>
 
-### 3. `render`의 유효성 검사들을 함수로 빼서 관리하자.
+#### 3. `render`의 유효성 검사들을 함수로 빼서 관리하자.
    
 
 
