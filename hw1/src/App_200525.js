@@ -17,43 +17,39 @@ class App extends Component {
 
 	render () {
 		const { email , password } = this.state;
+		const isValid = {
+			email: false,
+			password: false
+		}
 		const msg = {
 			email: '',
 			password: ''
 		}
 		let disabled = true;
 
-		// 유효성 검사
-		function checkValid() {
-			const chkEmail = email.search('@') !== -1 ? true : false;
-			const chkPassword = password.search(/(?=.*[A-Z])(?=.*[a-z]).{6,}/) !== -1 ? true : false;
+		// 이메일 유효성 검사
+		isValid.email = email.search('@') !== -1 ? true : false;
+		msg.email = isValid.email || email.length === 0 ? '' : '@가 포함되어야 합니다.';
 
-			// 메시지 저장
-			msg.email = chkEmail || email.length === 0 ? '' : '@가 포함되어야 합니다.';
-			if(!chkPassword) {
-				if (password.length === 0) {
-					msg.password = '';
-				} else if (password.length < 6) {
-					msg.password  = '6자리 이상 입력하세요.';
-				} else if (password.search(/[a-z]/) === -1) {
-					msg.password  = '소문자가 1개 이상 포함되어야 합니다.';
-				} else if (password.search(/[A-Z]/) === -1) {
-					msg.password  = '대문자가 1개 이상 포함되어야 합니다.';
-				}
+		// 비밀번호 유효성 검사
+		isValid.password = password.search(/(?=.*[A-Z])(?=.*[a-z]).{6,}/) !== -1 ? true : false;
+		if(!isValid.password) {
+			if (password.length === 0) {
+				msg.password = '';
+			} else if (password.length < 6) {
+				msg.password  = '6자리 이상 입력하세요.';
+			} else if (password.search(/[a-z]/) === -1) {
+				msg.password  = '소문자가 1개 이상 포함되어야 합니다.';
+			} else if (password.search(/[A-Z]/) === -1) {
+				msg.password  = '대문자가 1개 이상 포함되어야 합니다.';
 			}
-
-			activeBtn(chkEmail, chkPassword);
 		}
-		
+
 		// 버튼 활성화 
-		function activeBtn(chkEmail, chkPassword) {
-			disabled = chkEmail && chkPassword ? false : true;
-			if(!disabled) {
-				document.querySelector('.btn').classList.add('active');
-			}
+		disabled = isValid.email && isValid.password ? false : true;
+		if(!disabled) {
+			document.querySelector('.btn').classList.add('active');
 		}
-
-		checkValid();
 	
 		return (
 			<div className="App">
