@@ -1,0 +1,14 @@
+.App {
+	max-width: 640px;
+	margin: 0 auto;
+	overflow: hidden;
+	font-size: 1.5rem;
+}
+
+.App h3 {
+	margin: 30px 0 0 0;
+	padding: 30px 0;
+	background-color: #bf77bf;
+	text-align: center;
+	color: #eee;
+}
