@@ -4,7 +4,7 @@ import './Item.css';
 class Item extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		// 지금 내가 갖고 있는 todo랑 클릭했을 때 바뀌게될 todo랑 달라지면 걔만 업데이트해줘
-		if(this.props.todo != nextProps.todo) {
+		if(this.props.todo !== nextProps.todo) {
 			return true;
 		} else return false;
 	}
