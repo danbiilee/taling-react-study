@@ -1,52 +1,63 @@
 import React, { Component } from 'react';
 
 class App extends Component {
-
   state = {
-    key: new Date().getTime(),
+	key: new Date().getTime(),
     username: '',
     password: '',
-    list: []
+    list: [],
   };
 
   handleChange = e => {
-    const { name, value } = e.target;
+    // const value = e.target.value;
+    // const value = e.target.value;
+    const {value, name} = e.target;
+
+    // e.target의 name을 동적으로 key로 생성하고, e.target의 value를 해당 key의 값으로 
+    // const nextObject = {};
+    // nextObject.name = value; // nextObject = {username: 'a'}
+    // this.setState(nextObject);
+
     this.setState({
-      [name]: value
-    });
+      [name]: value,
+    })
   };
 
   handleInsert = () => {
-    const { key, username, password, list } = this.state;
-    list.push({
-      key,
-      username,
-      password
-    });
+    // this.state가 중복되면 비구조할당
+    const {list, username, password}= this.state;
 
     this.setState({
-      key: new Date().getTime(),
+      list: list.concat({
+		key: new Date().getTime(),
+        /* username: username,
+        password: password, */
+        // key와 value가 같으면 생략 
+        username,
+        password,
+      }),
+      // input값 초기화 
       username: '',
       password: '',
-      list
     });
   };
 
-  render () {
-    const { username, password, list } = this.state;
-    return(
+  render() {
+    return (
       <div>
-        <input type="text" name="username" value={username} onChange={this.handleChange}></input>
-        <input type="text" name="password" value={password} onChange={this.handleChange}></input>
-        <button onClick={this.handleInsert}>+</button>
-
+        <input value={this.state.username} name="username" onChange={this.handleChange}/>
+        <input value={this.state.password} name="password" onChange={this.handleChange}/>
+        <button onClick={this.handleInsert}>추가하기</button>
         <ul>
           {
-            list.map( item => {
-              return (
-                <li key={item.key}>{item.username}, {item.password}</li>
-              )
-              ;
+            this.state.list.map((item, index) => {
+              // 위의 리턴절처럼 ()생략 가능. ()쓸 거면 return 키워드 바로 옆에 
+              // return <li key={index}> {item.username}의 비밀번호는 {item.password}입니다.</li>;
+              return ( 
+                <li key={item.key}>
+                  {item.username}의 비밀번호는 {item.password} 입니다.
+                </li>
+              );
             })
           }
         </ul>
