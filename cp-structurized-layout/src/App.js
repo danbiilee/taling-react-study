@@ -31,15 +31,34 @@ class App extends Component {
   };
 
   handleCheck = id => {
-
-  };
+		console.log('check');
+		this.setState({
+			todos: this.state.todos.map(todo => {
+				if(todo.id === id) {
+					return {
+						...todo,
+						done: !todo.done
+					};
+				} else {
+					return todo;
+				}
+			})
+		});
+	};
+	
+	handleDelete = id => {
+		console.log('delete');
+		this.setState({
+			todos: this.state.todos.filter(todo => todo.id !== id)
+		});
+	};
 
 	render() {
 		return (
 			<div className="App">
 				<h3>TODO LIST</h3>
 				<Form onInsert={this.handleInsert} />
-				<List todos={this.state.todos} />
+				<List todos={this.state.todos} onCheck={this.handleCheck} onDelete={this.handleDelete}/>
 			</div>
 		);
 	}
