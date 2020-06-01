@@ -1,0 +1,42 @@
+.Item {
+	margin-bottom: 30px;
+	border-bottom: 1px dotted #bbb;
+	padding-bottom: 10px;
+	overflow: hidden;
+	font-size: 1.4rem;
+	cursor: pointer;
+}
+
+.Item:hover .check,
+.Item:hover .remove {
+	opacity: 0.5;
+}
+
+.Item:last-child {
+	margin-bottom: 0;
+}
+
+.Item.active {
+	text-decoration: line-through;
+	color: #dda0dd;
+}
+
+.Item.active .check {
+	opacity: 0.8;
+}
+
+.Item .check {
+	float: left;
+	opacity: 0;
+}
+
+.Item .text {
+	margin-left: 35px;
+	overflow: hidden;
+}
+
+.Item .remove {
+	float: right;
+	font-size: 1.2rem;
+	opacity: 0;
+}

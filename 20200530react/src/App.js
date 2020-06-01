@@ -1,96 +1,134 @@
+// 1. 입력 인풋(제출)
+// 2. 고유 키
+// 3. 포커스 이동
+// 4. 삭제
+// 5. 수정 
 import React, { Component, createRef } from 'react';
 
 class App extends Component {
-  // 지난 시간 프로젝트 이어서 ! 
-  id = 1; // 렌더되고 나서 만들어지면 안됨 
-
+  id = 1;
   state = {
     username: '',
     password: '',
     list: [],
+    editedId: '',
+    editedUsername: '',
+    editedPassword: '',
+    editedList: []
   };
 
-  // 엔터치고 다시 유저명으로 포커스 이동하게 하기 위함
-  // 렌더되기 전 constructor 시점에 만들어지는 것. 
-  // usernameInput = null; // 방법 1. 이 시점에선 아직 null
-  usernameInput = createRef(); // 방법 2. 돔을 받을 준비
+  usernameInput = createRef();
+  editForm = createRef();
 
   handleChange = e => {
-    const {value, name} = e.target;
-
+    const { name, value } = e.target;
+    
     this.setState({
-      [name]: value,
-    })
+      [name]: value
+    });
   };
-
+  
   handleInsert = e => {
-    // form태그의 새로고침을 막아주는 역할! 
     e.preventDefault();
-
-    const {list, username, password}= this.state;
-
+    const { username, password, list } = this.state;
+    
     this.setState({
-      // 위로 올려도 작동한다! 
       username: '',
       password: '',
       list: list.concat({
         username,
         password,
-        id: this.id
-      }),
-      // username: '',
-      // password: '',
+        id: this.id 
+      })
     });
 
-	this.id ++;
-
-	//insert했을 때 포커스를 username에 두기
-    // this.usernameInput.focus(); // 방법 1.  
-    this.usernameInput.current.focus(); // 방법 2. current: 지금 내가 갖고 있는 레퍼런스
+    this.id++;
+    this.usernameInput.current.focus();
   };
 
-  handelDelete = (id) => {
-    // 방법 1.
-    // // 1. 배열 복사
-    // const copiedList = this.state.list.slice(); 
-    // // 2. 요소 찾기(인덱스 찾기)
-    // // 파라미터로 받은 id랑 리스트 각 요소의 id를 비교해서 해당 요소의 index를 찾음
-    // const index = this.state.list.findIndex(user => user.id === id);
-    // // 3. 찾은 요소 삭제
-    // copiedList.splice(index, 1);
-    // // 4.반영
-    // this.setState({
-    //   list: copiedList,
-    // })
-
-    // 방법 2. 
+  handleDelete = id => {
     this.setState({
-      list: this.state.list.filter((user => user.id !== id)),
+      list: this.state.list.filter(user => user.id !== id)
     });
+  };
+
+  handleEditForm = id => {
+    const { list } = this.state;
+    const filterdList = list.filter(user => user.id === id);
+
+    this.setState({
+      editedId: id,
+      editedUsername: filterdList[0].username,
+      editedPassword: filterdList[0].password
+    });
+
+    console.log(this.editForm);
+    this.editForm.current.style.display = 'block';
+  };
+
+  handleEditChange = e => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleEditSubmit = e => {
+    e.preventDefault();
+
+    const { list, editedId, editedUsername, editedPassword } = this.state;
+    this.setState({
+      list: list.map(user => {
+        if(user.id === editedId) {
+          return {
+            id: user.id,
+            username: editedUsername,
+            password: editedPassword
+          };
+        } else return user;
+      }),
+      editedId: '',
+      editedUsername: '',
+      editedPassword: ''
+    });
+
+    this.editForm.current.style.display = 'none';
   };
 
   render() {
-    const { username, password, list } = this.state;
+    const { username, password, list, editedUsername, editedPassword } = this.state;
+
     return (
       <div>
         <form onSubmit={this.handleInsert}>
-          {/* <input value={username} name="username" onChange={this.handleChange} ref={ (ref) => this.usernameInput = ref}/> */}
-          <input value={username} name="username" onChange={this.handleChange} ref={this.usernameInput}/>
-          <input value={password} name="password" onChange={this.handleChange}/>
+          <input name="username" value={username} onChange={this.handleChange} ref={this.usernameInput}></input>      
+          <input name="password" value={password} onChange={this.handleChange}></input>      
           <button type="submit">추가하기</button>
         </form>
+
         <ul>
-          {
-            list.map((user) => {
-              return ( 
-                <li key={user.id}>
-                  {user.username}의 비밀번호는 {user.password} 입니다.
-                  <br />
-                  <button onClick={() => this.handelDelete(user.id)}>삭제하기</button>
-                </li>
-              );
-            })
-          }
+        {
+          list.map(user => {
+            return (
+              <li key={user.id}>
+                {user.username}의 비밀번호는 {user.password}입니다.
+                <button type="button" onClick={() => this.handleDelete(user.id)}>삭제하기</button>
+                <button type="button" onClick={() => this.handleEditForm(user.id)}>수정하기</button>
+                {/* 
+                  1. 수정하기 버튼 클릭하면 수정폼 보여야함.
+                  2. 저장하기 버튼 클릭하면 기존 list배열 변경되고, 수정폼 다시 안보여야함.(리렌더)
+                  - username, password를 어디에서 관리할건지? 
+                  3. 다른 리스트의 수정하기 버튼 클릭하면 이전 수정폼 안보이고, 새로 클릭한 수정폼 보여야함. 
+                */}
+                <form style={{display: "none"}} ref={this.editForm} onSubmit={this.handleEditSubmit}>
+                  <input name="editedUsername" value={editedUsername} onChange={this.handleEditChange}></input>      
+                  <input name="editedPassword" value={editedPassword} onChange={this.handleEditChange}></input>      
+                  <button type="submit">저장</button>
+                </form>
+              </li>
+            );
+          })
+        }
         </ul>
       </div>
     );
