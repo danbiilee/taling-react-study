@@ -3,9 +3,10 @@ import './Card.css';
 
 
 class Card extends Component {
-    render() {//TODO: implement me
+		render() {//TODO: implement me
+				const { card } = this.props;
         return (
-            <div></div>
+          card.value
         );
     }
 }

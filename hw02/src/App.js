@@ -12,8 +12,8 @@ class App extends Component {
 
   /* This values are not stored in state because they do not affect rendering */
 
-  //TODO: add id property for list's key property
-  
+	//TODO: add id property for list's key property
+	id = 1;
   // number of same cards in a deck
   same_cards = 2;
   // type of cards
@@ -27,19 +27,24 @@ class App extends Component {
   };
 
   initGame = () => {
+		console.log('initGame');
+
     let cards = [];
     for (var i = 0; i < this.same_cards; i++) {
       cards = cards.concat(
         shuffle(this.pool).map(val => {
           return ( {
-            //TODO: populate the list with properties of Object
+						//TODO: populate the list with properties of Object
+						id: this.id++,
+						value: val,
+						isOpen: false
           })}))
     }
 
     this.setState({
       score: 0,
       cards: cards
-    })
+    });
   }
 
   //TODO: implement me
@@ -73,14 +78,16 @@ class App extends Component {
   render() {
     const { cards, score } = this.state;
     // the game is finished if score equals the number of cards
-    const done = score === cards.length
+		const done = score === cards.length;
+		console.log(done);
     return (
       <div className="App">
         <h3>Memory Game</h3>
         {/* <Grid /> TODO: look at Grid.js to see which props to pass */}
+				<Grid list={cards}></Grid>
         {/* <ScoreBoard /> TODO: what should be passed to scoreBoard? */}
         <Timer running={!done}/>
-        {!done && <button onClick={this.initGame}> Start </button>}
+        {done && <button onClick={this.initGame}> {done ? 'Start' : 'Restart'} </button>}
       </div>
     );
   }
