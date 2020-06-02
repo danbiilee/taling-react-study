@@ -48,7 +48,9 @@ class App extends Component {
   }
 
   //TODO: implement me
-  handleToggle = () => {}
+  handleToggle = id => {
+
+  }
 
   //open upto same_cards to see if user's choice is correct or not
   tempOpen = async (id, value) => {
@@ -77,14 +79,15 @@ class App extends Component {
 
   render() {
     const { cards, score } = this.state;
+
     // the game is finished if score equals the number of cards
-		const done = score === cards.length;
-		console.log(done);
+    const done = score === cards.length;
+    
     return (
       <div className="App">
         <h3>Memory Game</h3>
         {/* <Grid /> TODO: look at Grid.js to see which props to pass */}
-				<Grid list={cards}></Grid>
+				<Grid list={cards} onToggle={this.handleToggle}></Grid>
         {/* <ScoreBoard /> TODO: what should be passed to scoreBoard? */}
         <Timer running={!done}/>
         {done && <button onClick={this.initGame}> {done ? 'Start' : 'Restart'} </button>}
