@@ -52,22 +52,11 @@ class App extends Component {
 
   handleShowForm = id => {
     const { list } = this.state;
-
     this.setState({
-      list: list.map(user => {
-        if(user.id === id) {
-          return {
-            ...user,
-            isShow: !user.isShow
-          };
-        } else {
-          return {
-            ...user,
-            isShow: false
-          };
-        }
-      }),
-      selectUser: {...list.filter(user => user.id === id)}[0]
+      list: list.map(user => 
+        user.id === id ? {...user, isShow: !user.isShow} : {...user, isShow: false}
+      ),
+      selectUser: list.find(user => user.id === id)
     });
   };
 
@@ -121,8 +110,8 @@ class App extends Component {
                 <button type="button" onClick={() => this.handleDelete(user.id)}>삭제하기</button>
                 <button type="button" onClick={() => this.handleShowForm(user.id)}>수정하기</button>
                 <form style={formStyle(user.isShow)} onSubmit={this.handleEditSubmit}>
-                  <input name="username" value={selectUser.username} onChange={this.handleEditChange}></input>      
-                  <input name="password" value={selectUser.password} onChange={this.handleEditChange}></input>      
+                  <input name="username" value={selectUser.username || ''} onChange={this.handleEditChange}></input>      
+                  <input name="password" value={selectUser.password || ''} onChange={this.handleEditChange}></input>      
                   <button type="submit">저장</button>
                 </form>
               </li>
