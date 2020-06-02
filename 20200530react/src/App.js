@@ -89,13 +89,9 @@ class App extends Component {
       list: list.map(user => {
         if(user.id === selectUser.id) {
           return selectUser;
-          // return {
-          //   ...user,
-          //   username: selectUser.username,
-          //   password: selectUser.password,
-          //   isShow: false
-          // };
-        } else return user;
+        } else {
+          return user;
+        }
       }),
       selectUser: {}
     });
