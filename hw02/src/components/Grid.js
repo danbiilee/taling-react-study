@@ -5,17 +5,23 @@ import {chunk} from '../utils';
 class Grid extends Component {
 
   render() {
-    const { list, onToggle } = this.props;
+    const { list, onToggle, tempOpen } = this.props;
 
     return (
       <div className="Grid">
         {/* split the list into lists with 8 elements each for better view */}
         {chunk(list, 8).map(l => {
           return (
-            <div key={l.id} className="Grid"> 
+            <div className="Grid"> 
               {l.map(card => {
                 return ( // TODO
-                  <button className="Card"><Card card={card} onToggle={onToggle}/></button>
+									<button 
+										className="Card" 
+										key={card.id} 
+										onClick={()=> {onToggle(card.id); tempOpen(card.id, card.value);}} 
+										disabled={card.isOpen}>
+										<Card card={card} />
+									</button>
                 )
               })}
             </div>)

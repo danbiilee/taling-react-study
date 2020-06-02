@@ -49,12 +49,17 @@ class App extends Component {
 
   //TODO: implement me
   handleToggle = id => {
-
+		this.setState({
+			cards: this.state.cards.map(card => 
+				card.id === id ? {...card, isOpen: !card.isOpen} : card 
+			),
+		});
   }
 
   //open upto same_cards to see if user's choice is correct or not
   tempOpen = async (id, value) => {
-    this.opened_cards.push({ id: id, value: value });
+		this.opened_cards.push({ id: id, value: value });
+		console.log(this.opened_cards);
 
     // opened a wrong card :
     // since every card in opened_cards should have same value,
@@ -63,7 +68,8 @@ class App extends Component {
     if (this.opened_cards[0].value !== this.opened_cards.slice(-1)[0].value) {
       await new Promise(r => setTimeout(r, 700)); // show card briefly
       for (var x of this.opened_cards) {
-        this.handleToggle(x.id) // return the temporary open cards to hidden position
+				console.log(x);
+        this.handleToggle(x.id); // return the temporary open cards to hidden position
       }
       //reset the open cards
       this.opened_cards = [];
@@ -86,9 +92,12 @@ class App extends Component {
     return (
       <div className="App">
         <h3>Memory Game</h3>
+
         {/* <Grid /> TODO: look at Grid.js to see which props to pass */}
-				<Grid list={cards} onToggle={this.handleToggle}></Grid>
+				<Grid list={cards} onToggle={this.handleToggle} tempOpen={this.tempOpen} />
+
         {/* <ScoreBoard /> TODO: what should be passed to scoreBoard? */}
+				<ScoreBoard score={score} total={cards.length} />
         <Timer running={!done}/>
         {done && <button onClick={this.initGame}> {done ? 'Start' : 'Restart'} </button>}
       </div>
