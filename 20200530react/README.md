@@ -1,68 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 0530수업
 
-## Available Scripts
+- 🥊🥊 복습 완료! 🥊🥊
+  
+- 🥊🥊 과제: 수정하기 버튼 추가 완료! 🥊🥊
+  
 
-In the project directory, you can run:
+--- 
+### 과제 피드백
+1. `if else`문 대신 삼항 연산자를 이용해 코드를 간결히 작성하자. 
+2. `filter()` 메서드 자체가 기존 배열의 변경없이 새로운 배열을 반환해주므로(**불변성 유지**) 반환된 배열, 여기서는 배열의 객체 요소를 `...`와 같은 스프레드 연산자로 복사할 필요가 없다.
+3. 값의 일부분을 바꿔야하는 것이 아니라 기존 값은 그대로인 채, 일치하는 요소를 찾기만 하면 되는 것이므로 `filter()` 메서드보다는 `find()` 메서드가 더 적합하다.
+- `filter()`:  주어진 함수를 만족하는 모든 요소를 모아 새로운 **배열로 반환**한다.
+- `find()`: 주어진 함수를 만족하는 첫 번째 요소의 **값을 반환**한다.
 
-### `yarn start`
+```javascript
+handleShowForm = id => {
+  const { list } = this.state;
+  this.setState({
+      // if else절 -> 삼항 연산자
+      list: list.map(user => 
+        user.id === id ? {...user, isShow: !user.isShow} : {...user, isShow: false}
+      ),
+      // 수정 전엔 filter가 반환한 배열을 다시 객체로 바꾼다고 난리난리였는데 find를 쓰니까 세상 이렇게 간단할 수가... 
+      selectUser: list.find(user => user.id === id)
+  });
+};
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+4. 아래와 같이 input에 의한 에러가 발생한다😱!
+> Warning: A component is changing an uncontrolled input of type undefined to be controlled. Input elements should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled input element for the lifetime of the component   
 
-### `yarn test`
+`state = {selectUser: {}}`로 했는데 input에서 value로 `.password`등을 조회하고 있기 때문이라는데...!   
+처음 렌더될 때는 selectUser에 username이랑 password속성이 없다가 나중에 이벤트 핸들러에서 추가되는 거라 그런 건가보다!!!     
+이 때는 **input 태그의 value에 기본값**을 넣어주면 된다. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```javascript
+<input name="username" value={selectUser.username || ''} onChange={this.handleEditChange}></input>
+```
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
