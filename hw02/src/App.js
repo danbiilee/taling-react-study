@@ -27,8 +27,6 @@ class App extends Component {
   };
 
   initGame = () => {
-		console.log('initGame');
-
     let cards = [];
     for (var i = 0; i < this.same_cards; i++) {
       cards = cards.concat(
@@ -59,7 +57,6 @@ class App extends Component {
   //open upto same_cards to see if user's choice is correct or not
   tempOpen = async (id, value) => {
 		this.opened_cards.push({ id: id, value: value });
-		console.log(this.opened_cards);
 
     // opened a wrong card :
     // since every card in opened_cards should have same value,
@@ -68,7 +65,6 @@ class App extends Component {
     if (this.opened_cards[0].value !== this.opened_cards.slice(-1)[0].value) {
       await new Promise(r => setTimeout(r, 700)); // show card briefly
       for (var x of this.opened_cards) {
-				console.log(x);
         this.handleToggle(x.id); // return the temporary open cards to hidden position
       }
       //reset the open cards

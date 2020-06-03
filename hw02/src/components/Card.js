@@ -3,14 +3,22 @@ import './Card.css';
 
 class Card extends Component {
 
-    render() {//TODO: implement me
-      const { card } = this.props;
-
-      return (
-        <div>
-          { card.isOpen ? card.value : '?' }
-        </div>
-      );
+  shouldComponentUpdate(nextProps, nextState) {
+    if(this.props.card !== nextProps.card) {
+      return true;
+    } else {
+      return false;
     }
+  }
+  
+  render() {//TODO: implement me
+    const { card } = this.props;
+
+    return (
+      <div>
+        { card.isOpen ? card.value : '?' }
+      </div>
+    );
+  }
 }
 export default Card;
