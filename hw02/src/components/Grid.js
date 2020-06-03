@@ -13,9 +13,8 @@ class Grid extends Component {
       <div className="Grid">
         {/* split the list into lists with 8 elements each for better view */}
         {chunk(list, 8).map(l => {
-
           return (
-            <div key={`l_${this.id++}`}> 
+            <div key={this.id++}> 
               {l.map(card => {
                 return ( // TODO
                   <button 
