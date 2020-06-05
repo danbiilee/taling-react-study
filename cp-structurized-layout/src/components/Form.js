@@ -2,33 +2,31 @@ import React, { Component } from 'react';
 import './Form.css';
 
 class Form extends Component {
-
 state = {
-  input: ''
+	input: '', 
 };
 
 handleChange = e => {
-  this.setState({
-    input: e.target.value
-  }); 
+	this.setState({
+		input: e.target.value,
+	})
 };
 
 handleSubmit = e => {
   e.preventDefault();
-	this.props.onInsert(this.state.input);
-	
-	this.setState({
-		input: ''
-	});
-}
+  // 부모의 handleInsert 호출 
+  this.props.onInsert(this.state.input);
+  // 초기화 
+  this.setState({
+    input: '',
+  });
+};
 
 render() {
-	const { input } = this.state;
-
 	return (
 		<div className="Form">
 			<form className="form_container" onSubmit={this.handleSubmit}>
-				<input placeholder="something to do?" value={input} onChange={this.handleChange}/>
+				<input placeholder="something to do?" value={this.state.input} onChange={this.handleChange} />
 				<button>추가</button>
 			</form>
 		</div>

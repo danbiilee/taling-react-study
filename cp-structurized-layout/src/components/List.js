@@ -6,17 +6,13 @@ class List extends Component {
 	render() {
 		const { todos, onCheck, onDelete } = this.props;
 
-		return (
-		<div className="List">
+		return <div className="List">
 		{
 			todos.map(todo => {
-				return (
-					<Item key={todo.id} todo={todo} onCheck={onCheck} onDelete={onDelete}></Item>
-				);
+				return <Item key={todo.id} todo={todo} onCheck={onCheck} onDelete={onDelete} />;
 			})
 		}
-		</div>
-		);
+		</div>;
 	}
 }
 
