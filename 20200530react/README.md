@@ -46,9 +46,7 @@ handleShowForm = id => {
 ## 🛠🛠 0606수업. 과제 REVIEW 
 1. `isFixMode` 프로퍼티를 추가해 그 값이 `true`일 때, 즉 수정모드일 때만 폼을 보여줄 수 있도록 JSX안에서 처리한다.
 ```javascript 
-{
-  user.isFixMode && <form>...</form>
-}
+{ user.isFixMode && <form>...</form> }
 ```
 
 2. 수정하려는 username과 password에 대한 값을 관리할 수 있도록 `state`에 `updateUsername`과 `updatePassword`를 추가 후 수정 폼 엘리먼트들에 `name`속성으로 지정해준다. 그리고 이미 존재하는 `handleChange` 함수를 사용해 `state`를 업데이트한다.
