@@ -53,7 +53,7 @@ handleShowForm = id => {
 
 
 3. 수정하기 버튼을 클릭했을 때 첫번째 폼 엘리먼트에 포커스를 주고싶다면 그 `input` 태그에 `autoFocus` 속성을 주면 된다.   
-> ❗ 여기서 `ref`와 `current`를 사용하면 [ Uncaught TypeError: Cannot read property 'focus' of null ] 에러가 난다.
+❗ 여기서 `ref`와 `current`를 사용하면 [ Uncaught TypeError: Cannot read property 'focus' of null ] 에러가 난다.
 
 
 4. 폼 엘리먼트에 `value` 속성 대신 `defaultValue` 속성을 지정한다.    
