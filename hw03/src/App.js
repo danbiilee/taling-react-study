@@ -62,10 +62,12 @@ class App extends Component {
   };
 
   getSlowData = () => {
-    this.api({
-      url: 'http://askat.me:8000/api/slow',
-      method: 'get',
-    })
+    // this.api({
+    //   url: 'http://askat.me:8000/api/slow',
+    //   method: 'get',
+    // })
+    this.api
+      .get('http://askat.me:8000/api/slow')
       .then(response => {
         this.setState({
           data: response.data,
