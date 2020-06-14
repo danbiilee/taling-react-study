@@ -1,0 +1,59 @@
+.match {
+	padding: 12px 20px;
+	margin: 13px 0;
+	border-bottom: 1px dotted #dddddd;
+}
+
+.match span {
+	display: inline-block;
+}
+
+.match-date {
+	width: 90px;
+	font-size: 12px;
+	margin-right: 30px;
+}
+
+.match-team-name {
+	width: 160px;
+	font-weight: bold;
+	line-height: 20px;
+	vertical-align: middle;
+	color: #555555;
+	font-size: 14px;
+}
+
+.match-team-name.home {
+	text-align: right;
+	margin-right: 24px;
+}
+
+.match-team-name.away {
+	text-align: left;
+	margin-left: 24px;
+}
+
+.match-team-badge {
+	width: 40px;
+	height: 40px;
+	vertical-align: middle;
+}
+
+.match-score {
+	width: 120px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.match-team-score {
+	line-height: 28px;
+	width: 30px;
+	height: 30px;
+	margin: 0 5px;
+	background-color: #eeeeee;
+}
+
+.match-stadium {
+	font-size: 12px;
+	margin-left: 30px;
+}
