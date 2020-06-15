@@ -45,7 +45,7 @@ class App extends Component {
             />
           }
         >
-          <Match range={range} leagueId={leagueId} />{' '}
+          <Match range={range} leagueId={leagueId} />
           {/* MatchTemplate의 children */}
         </MatchTemplate>
       </div>

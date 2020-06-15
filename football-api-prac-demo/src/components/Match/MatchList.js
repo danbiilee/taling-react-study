@@ -51,13 +51,15 @@ class MatchList extends Component {
   }
 
   render() {
+    console.log('matchList re-render');
+
     const { data, loading } = this.state;
     return (
       <div>
         {loading && <h2 style={{ textAlign: 'center' }}>data loading...</h2>}
         {!loading &&
         data &&
-        !data.error /* 매칭된 시합이 아예 없는날 대비 추가. 왜 에러나쥬!!?!? */ &&
+        !data.error && /* 매칭된 시합이 아예 없는날 대비 추가. */
           data.map(d => <Match key={d.match_id} data={d} />)}
       </div>
     );
