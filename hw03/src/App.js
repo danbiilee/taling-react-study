@@ -24,13 +24,27 @@ class App extends Component {
 
   getLottoData = async () => {
     try {
-      const [lotto1, lotto2] = await axios.all([
-        axios.get('http://askat.me:8000/api/lotto1'),
-        axios.get('http://askat.me:8000/api/lotto2'),
+      const arr = await axios.all([
+        axios
+          .get('http://askat.me:8000/api/lotto1')
+          .then(response => response.data),
+        axios
+          .get('http://askat.me:8000/api/lotto2')
+          .then(response => response.data),
       ]);
       this.setState({
-        data: lotto1.data.concat(lotto2.data).join(' '),
+        data: arr
+          .reduce((accumulator, currentVal) => accumulator.concat(currentVal))
+          .join(' '),
       });
+
+      // const [lotto1, lotto2] = await axios.all([
+      //   axios.get('http://askat.me:8000/api/lotto1'),
+      //   axios.get('http://askat.me:8000/api/lotto2'),
+      // ]);
+      // this.setState({
+      //   data: lotto1.data.concat(lotto2.data).join(' '),
+      // });
     } catch (e) {
       console.error(e);
     }
