@@ -1,68 +1,70 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🥊🥊 0611. 과제 완료! 🥊🥊
 
-## Available Scripts
 
-In the project directory, you can run:
+### [🔍]
+#### 1. Axios Multi Request
+> 공식문서 `multiple concurrent requests` 참고 
+> <https://github.com/axios/axios> 
 
-### `yarn start`
+응답까지 10초가 걸리는 2개의 요청을 각각 호출하면 응답을 모두 받는 데 총 20초가 걸린다.  
+하지만 `axios`의 `all()` 메서드를 이용하면 2개의 요청을 한 번에 호출해, 2개의 응답을 모두 받기까지 총 10초가 걸리도록 할 수 있다.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```javascript
+const [lotto1, lotto2] = await axios.all([
+  axios.get('http://askat.me:8000/api/lotto1'),
+  axios.get('http://askat.me:8000/api/lotto2'),
+]);
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+this.setState({
+  data: lotto1.data.concat(lotto2.data).join(' '),
+});
+```
+각 요청은 3개의 수를 배열 형식으로 반환하고, 두 배열을 합해 공백으로 구분된 6개의 수를 문자열로 state에 저장하면 되는 문제였다.  
+`all()` 메서드에 요청이 2개였기 때문에 비구조 할당 후 `concat()` 메서드를 이용해 합쳐도 별 문제가 없었지만, 요청이 많아질 경우를 대비해 `reduce()` 메서드를 이용해 코드를 효율적으로 변경하도록 하자. 
 
-### `yarn test`
+```javascript
+const arr = await axios.all([
+  axios
+    .get('http://askat.me:8000/api/lotto1')
+    .then(response => response.data),
+  axios
+    .get('http://askat.me:8000/api/lotto2')
+    .then(response => response.data),
+]);
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+this.setState({
+  data: arr
+    .reduce((accumulator, currentVal) => accumulator.concat(currentVal))
+    .join(' '),
+});
+```
 
-### `yarn build`
+#### 2. axios-cache-adapter
+> 참고 <https://www.npmjs.com/package/axios-cache-adapter>
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`axios-cache-adapter`를 사용하면 첫 요청에만 시간이 걸리고, 그 다음 요청부터는 첫 요청 때 캐싱된 데이터를 가져와 응답하므로 시간이 걸리지 않는다.    
+import를 해준 후 클래스 필드에 생성한 `cache` 인스턴스를 이용해 요청을 보내면 된다. 
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```javascript
+import { setupCache } from 'axios-cache-adapter';
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+class App extends Component {
+  cache = setupCache({
+    maxAge: 15 * 60 * 1000,
+  });
 
-### `yarn eject`
+  api = axios.create({
+    adapter: this.cache.adapter,
+  });
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  getSlowData = () => {
+    this.api
+    .get('http://askat.me:8000/api/slow')
+    .then(//...)
+  };
+}
+```
+한 번 `getSlowData` 핸들러 함수에서 `axios-cache-adapter`를 이용해 요청을 보내면 그 뒤 어디서든 똑같은 요청을 다시 보내더라도 실제 요청 작업은 들어가지 않고 바로 캐싱된 데이터를 갖고 온다. 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+> ❗ 처음에는 `getSlowData` 함수 안에서 `cache` 인스턴스 생성을 했었는데, 그러면 함수에서 매번 새롭게 인스턴스가 생성되므로 결국은 아무 것도 캐싱할 수 없게 된다!    
+❗ 공식문서는 `api({url: ..., method: get...})` 의 방식만을 소개하고 있지만 axios이므로 `api.get('http://...')` 같은 방식으로 사용해도 된다! 
