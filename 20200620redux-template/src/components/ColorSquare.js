@@ -5,6 +5,8 @@ const colors = ['#bfcd7e', '#7E57C2', '#EA80FC', '#00BCD4'];
 
 class Color extends Component {
   render() {
+		// color = colors에서 map으로 순회하여 내려준 컬러 요소
+		// active = 선택한 컬러
     const { color, active, onSelect } = this.props;
 
     const style = {
