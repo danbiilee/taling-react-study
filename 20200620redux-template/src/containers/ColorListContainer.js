@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ColorList from '../components/ColorList';
-import * as ColorListActions from '../store/modules/colorList';
 import { bindActionCreators } from 'redux'; //액션생성함수 *로 불러왔으므로 합쳐줄 거 필요
+import * as ColorListActions from '../store/modules/colorList';
+import ColorList from '../components/ColorList';
 import { changeColor } from '../store/modules/counter';
 
 class ColorListContainer extends Component {
@@ -13,14 +13,16 @@ class ColorListContainer extends Component {
     changeInput(e.target.value);
   }
   
-  handleInsert = () => {}
+  handleInsert = () => {
+		
+	}
   handleUpdate = () => {}
   handleRemove = () => {}
 
   render() {
     const {list, input, colorListActions} = this.props;
 
-    return <ColorList list={list} input={input} />;
+    return <ColorList list={list} input={input} onChange={this.handleChange} />;
   }
 }
 

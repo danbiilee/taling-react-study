@@ -3,7 +3,7 @@ import { createAction, handleActions } from 'redux-actions';
 //action
 const CHANGE_INPUT = 'colorList/CHANGE_INPUT';
 const INSERT = 'colorList/INSERT';
-const UPDATE = 'colorList/UPDATE'; //COLOR_OPACTIY_UPDATE
+const UPDATE = 'colorList/UPDATE'; // UPDATE_COLOR_OPACTIY
 const REMOVE = 'colorList/REMOVE'; 
 
 let id = 1;
@@ -29,10 +29,10 @@ export default handleActions({
   [INSERT]: (state, action) => ({
     ...state,
     list: state.list.concat({
-      //id: id++, //id증가는 reducer에서 하면 안됨!
+      //id: id++, // id증가는 reducer에서 하면 안됨!
       color: action.payload.color,
       id: action.payload.id,
-      opacity: 1, //초기값
+      opacity: 1, // 초기값
     })
   }),
   [UPDATE]: (state, action) => ({
@@ -48,6 +48,6 @@ export default handleActions({
   }),
   [REMOVE]: (state, action) => ({
     ...state,
-    list: state.list.filier(item => item.id !== action.payload),
+    list: state.list.filter(item => item.id !== action.payload),
   }),  
 }, initialState)
