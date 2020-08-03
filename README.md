@@ -1,4 +1,4 @@
-# taling-react-study
+# react-study
 
 ## 📌  탈잉
 📅 2020.05.23 - 2020.06.28  
