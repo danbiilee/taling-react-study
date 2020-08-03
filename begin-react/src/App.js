@@ -1,6 +1,8 @@
 import React, { useRef, useState, useMemo, useCallback } from 'react';
-import UserList from './UserList';
-import CreateUser from './CreateUser';
+// import UserList from './UserList';
+// import CreateUser from './CreateUser';
+import UserList from './UserListwithReducer';
+import CreateUser from './CreateUserwithReducer';
 
 function countActiveUsers(users) {
   console.log('user 세는 중');

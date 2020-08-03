@@ -4,9 +4,9 @@ const CreateUser = ({ username, email, onChange, onCreate }) => {
   console.log('CreateUser render');
   return (
     <div>
-      <input name="username" onChange={onChange} value={username} />
-      <input name="email" onChange={onChange} value={email} />
-      <button onClick={onCreate}>create</button>
+      <input name="username" onChange={} value={username} />
+      <input name="email" onChange={} value={email} />
+      <button onClick={}>create</button>
     </div>
   );
 }

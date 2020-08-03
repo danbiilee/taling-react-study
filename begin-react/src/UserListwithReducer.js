@@ -2,15 +2,6 @@ import React, { useEffect } from 'react';
 
 const User = React.memo(function User({ user, onRemove, onToggle }) {
 	console.log('User render');
-	// useEffect(()=>{
-	// 	console.log('User render');
-	// 	console.log(user);
-	// 	return () => {
-	// 		console.log('User will change');
-	// 		console.log(user);
-	// 	}
-	// }, [user]);
-
   return (
     <div>
       <b 
@@ -18,12 +9,12 @@ const User = React.memo(function User({ user, onRemove, onToggle }) {
         cursor: 'pointer',
         color: user.active ? 'green' : 'black'
         }}
-        onClick={() => onToggle(user.id)}
+        onClick={}
       >
         {user.username}
       </b> 
       <span>({user.email})</span>
-      <button onClick={() => onRemove(user.id)}>delete</button>
+      <button onClick={}>delete</button>
     </div>
   )
 });
@@ -35,7 +26,7 @@ function UserList({ users, onRemove, onToggle }) {
     <div>
       {
         users.map(user => (
-          <User key={user.id} user={user} onRemove={onRemove} onToggle={onToggle} />
+          <User key={user.id} user={user} onRemove={} onToggle={} />
         ))
       }
     </div>
