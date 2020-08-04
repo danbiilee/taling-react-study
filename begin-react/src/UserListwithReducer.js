@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { UserDispatch } from './AppwithReducer';
 
-const User = React.memo(function User({ user, onRemove, onToggle }) {
+const User = React.memo(function User({ user }) {
 	console.log('User render');
+
+	const dispatch = useContext(UserDispatch);
+
   return (
     <div>
       <b 
@@ -9,24 +13,28 @@ const User = React.memo(function User({ user, onRemove, onToggle }) {
         cursor: 'pointer',
         color: user.active ? 'green' : 'black'
         }}
-        onClick={() => onToggle(user.id)}
+        onClick={() => {
+					dispatch({ type: 'TOGGLE_USER', id: user.id });
+				}}
       >
         {user.username}
       </b> 
       <span>({user.email})</span>
-      <button onClick={() => onRemove(user.id)}>delete</button>
+      <button onClick={() => {
+				dispatch({ type: 'REMOVE_USER', id: user.id });
+			}}>delete</button>
     </div>
   )
 });
  
 
-function UserList({ users, onRemove, onToggle }) {
+function UserList({ users }) {
   console.log('UserList render');
   return (
     <div>
       {
         users.map(user => (
-          <User key={user.id} user={user} onToggle={onToggle} onRemove={onRemove} />
+          <User key={user.id} user={user} />
         ))
       }
     </div>
