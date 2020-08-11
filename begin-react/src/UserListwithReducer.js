@@ -2,41 +2,42 @@ import React, { useEffect, useContext } from 'react';
 import { UserDispatch } from './AppwithReducer';
 
 const User = React.memo(function User({ user }) {
-	console.log('User render');
+  console.log('User render');
 
-	const dispatch = useContext(UserDispatch);
+  const dispatch = useContext(UserDispatch);
 
   return (
     <div>
-      <b 
+      <b
         style={{
-        cursor: 'pointer',
-        color: user.active ? 'green' : 'black'
+          cursor: 'pointer',
+          color: user.active ? 'green' : 'black',
         }}
         onClick={() => {
-					dispatch({ type: 'TOGGLE_USER', id: user.id });
-				}}
+          dispatch({ type: 'TOGGLE_USER', id: user.id });
+        }}
       >
         {user.username}
-      </b> 
+      </b>
       <span>({user.email})</span>
-      <button onClick={() => {
-				dispatch({ type: 'REMOVE_USER', id: user.id });
-			}}>delete</button>
+      <button
+        onClick={() => {
+          dispatch({ type: 'REMOVE_USER', id: user.id });
+        }}
+      >
+        delete
+      </button>
     </div>
-  )
+  );
 });
- 
 
 function UserList({ users }) {
   console.log('UserList render');
   return (
     <div>
-      {
-        users.map(user => (
-          <User key={user.id} user={user} />
-        ))
-      }
+      {users.map(user => (
+        <User key={user.id} user={user} />
+      ))}
     </div>
   );
 }
