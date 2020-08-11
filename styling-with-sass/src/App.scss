@@ -1,0 +1,10 @@
+.App {
+  width: 512px;
+  margin: 0 auto;
+  margin-top: 4rem;
+  padding: 1rem;
+  border: 1px solid black;
+  .buttons + .buttons {
+    margin-top: 1rem;
+  }
+}
