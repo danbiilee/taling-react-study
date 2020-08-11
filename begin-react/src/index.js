@@ -4,7 +4,7 @@ import './index.css';
 //import App from './App';
 import App from './AppwithReducer';
 import * as serviceWorker from './serviceWorker';
-import Counter from './Counter';
+import Counter from './CounterwithClassComponent';
 
 ReactDOM.render(
   <React.StrictMode>
