@@ -31,7 +31,7 @@ const CheckCircle = styled.div`
   align-items: center;
   justify-content: center;
   width: 32px;
-  hegiht: 32px;
+  height: 32px;
   margin-right: 20px;
   border: 1px solid #ced4da;
   border-radius: 16px;
