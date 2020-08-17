@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { MdAdd } from 'react-icons/md';
+import { useTodoDispatch, useTodoNextId } from '../TodoContext';
 
 const CircleButton = styled.button`
   background: #38d9a9;
@@ -50,7 +51,7 @@ const InsertFormPositioner = styled.div`
   width: 100%;
 `;
 
-const InsertForm = styled.div`
+const InsertForm = styled.form`
   padding: 32px 32px 72px;
   border-top: 1px solid #e9ecef;
   border-radius: 0 0 16px 16px;
@@ -69,14 +70,39 @@ const Input = styled.input`
 
 function TodoCreate() {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+
+  const dispatch = useTodoDispatch();
+  const nextId = useTodoNextId();
+
   const onToggle = () => setOpen(!open);
+  const onChange = (e) => setValue(e.target.value);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'CREATE',
+      todo: {
+        id: nextId.current,
+        text: value,
+        done: false,
+      },
+    });
+    setValue('');
+    setOpen(false);
+    ++nextId.current;
+  };
 
   return (
     <>
       {open && (
         <InsertFormPositioner>
-          <InsertForm>
-            <Input autoFocus placeholder="할 일을 입력 후, Enter 를 누르세요" />
+          <InsertForm onSubmit={onSubmit}>
+            <Input
+              autoFocus
+              placeholder="할 일을 입력 후, Enter 를 누르세요"
+              onChange={onChange}
+              value={value}
+            />
           </InsertForm>
         </InsertFormPositioner>
       )}
@@ -87,4 +113,5 @@ function TodoCreate() {
   );
 }
 
-export default TodoCreate;
+export default React.memo(TodoCreate);
+//export default TodoCreate;

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
+import { useTodoState } from '../TodoContext';
 
 const TodoListBlock = styled.div`
   overflow-y: auto;
@@ -9,12 +10,17 @@ const TodoListBlock = styled.div`
 `;
 
 function TodoList() {
+  const todos = useTodoState();
   return (
     <TodoListBlock>
-      <TodoItem text="aaaaaaaa" done={true} />
-      <TodoItem text="bbbbbbbb" done={true} />
-      <TodoItem text="cccccccc" done={false} />
-      <TodoItem text="dddddddd" done={false} />
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          id={todo.id}
+          text={todo.text}
+          done={todo.done}
+        />
+      ))}
     </TodoListBlock>
   );
 }
