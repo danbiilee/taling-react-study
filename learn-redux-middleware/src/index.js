@@ -6,10 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './modules';
-import myLogger from './middlewares/myLogger';
+import logger from 'redux-logger';
 
-const store = createStore(rootReducer, applyMiddleware(myLogger));
-console.log(store.getState());
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 ReactDOM.render(
   <Provider store={store}>
