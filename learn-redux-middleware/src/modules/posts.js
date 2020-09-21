@@ -18,7 +18,7 @@ export const getPosts = () => async dispatch => {
     const posts = await postsAPI.getPosts(); // API 호출
     dispatch({ type: GET_POSTS_SUCCESS, posts }); // 성공
   } catch (e) {
-    dispatch({ type: GET_POSTS_ERROR, error: e }); // 실해
+    dispatch({ type: GET_POSTS_ERROR, error: e }); // 실패
   }
 };
 
