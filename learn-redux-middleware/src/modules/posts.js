@@ -31,7 +31,8 @@ export default function posts(state = initialState, action) {
     case GET_POSTS_SUCCESS:
     case GET_POSTS_ERROR:
       //return handleAsyncActions(GET_POSTS, 'posts')(state, action);
-      const postsReducer = handleAsyncActions(GET_POSTS, 'posts');
+      // 목록을 요청할 땐 keepData=true -> 재로딩 하되, SUCCESS 떨어지기 전까지 기존 데이터 유지
+      const postsReducer = handleAsyncActions(GET_POSTS, 'posts', true);
       return postsReducer(state, action);
     case GET_POST:
     case GET_POST_SUCCESS:

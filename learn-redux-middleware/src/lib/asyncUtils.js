@@ -46,14 +46,15 @@ export const reducerUtils = {
 
 // 비동기 관련 액션들을 처리하는 리듀서를 만들어주는 함수
 // type =  action.type, key = state.key(예: posts, post)
-export const handleAsyncActions = (type, key) => {
+export const handleAsyncActions = (type, key, keepData = false) => {
+  // keepData 파라미터 추가 -> 로딩할 때도 데이터를 유지하는 것이 가능 -> 로딩중... 보이는 이슈 해결
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
   return (state, action) => {
     switch (action.type) {
       case type:
         return {
           ...state,
-          [key]: reducerUtils.loading(),
+          [key]: reducerUtils.loading(keepData ? state[key].data : null),
         };
       case SUCCESS:
         return {
