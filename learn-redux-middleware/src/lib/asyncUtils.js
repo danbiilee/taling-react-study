@@ -71,3 +71,20 @@ export const handleAsyncActions = (type, key, keepData = false) => {
     }
   };
 };
+
+// 포스트 재로딩 이슈 해결2. 함수 커스터마이징
+// 특정 id를 처리하는 Thunk 생성함수
+const defaultIdSelector = (param) => param;
+export const createPromiseThunkById = (
+  type,
+  promiseCreator,
+  idSelector = defaultIdSelector
+) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+
+  return (param) => async (dispatch) => {
+    // param이 객체 형태라면 param.id로 설정
+    const id = idSelector(param);
+    dispatch({ type, meta: id });
+  };
+};

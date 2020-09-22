@@ -14,12 +14,16 @@ const GET_POSTS_ERROR = 'posts/GET_POSTS_ERROR'; // 요청 실패
 const GET_POST = 'GET_POST';
 const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
 const GET_POST_ERROR = 'GET_POST_ERROR';
+// 포스트 비우기
+const CLEAR_POST = 'CLEAR_POST';
 
 // thunk를 사용할 때 꼭 모든 액션들에 대해 액션 생성함수를 만들지 않아도 됨
 // thunk 함수에서 바로 액션 객체를 만들어도 됨
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
 export const getPost = createPromiseThunk(GET_POST, postsAPI.getPostById);
+export const clearPost = () => ({ type: CLEAR_POST });
 
+// 반복되는 코드를 initial() 함수를 사용해 리팩토링
 const initialState = {
   posts: reducerUtils.initial(),
   post: reducerUtils.initial(),
@@ -40,6 +44,11 @@ export default function posts(state = initialState, action) {
       //return handleAsyncActions(GET_POST, 'post')(state, action);
       const postReducer = handleAsyncActions(GET_POST, 'post');
       return postReducer(state, action);
+    case CLEAR_POST:
+      return {
+        ...state,
+        post: reducerUtils.initial(),
+      };
     default:
       return state;
   }
