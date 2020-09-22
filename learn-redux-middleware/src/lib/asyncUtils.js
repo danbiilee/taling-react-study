@@ -4,14 +4,14 @@ export const createPromiseThunk = (type, promiseCreator) => {
 
   // promiseCreator가 여러 개의 파라미터를 전달해야 한다면
   // 객체 타입의 파라미터를 받아오자
-  return param => async dispatch => {
+  return (param) => async (dispatch) => {
     dispatch({ type, param }); // 요청 시작
     try {
       // payload로 결과명 통일
       const payload = await promiseCreator(param);
       dispatch({ type: SUCCESS, payload }); // 성공
     } catch (e) {
-      dispatch({ type: ERROR, payload: e, error: true }); // 실패
+      dispatch({ type: ERROR, error: e }); // 실패
     }
   };
 };
@@ -31,13 +31,13 @@ export const reducerUtils = {
     error: null,
   }),
   // 성공 상태
-  loading: payload => ({
+  success: (payload) => ({
     loading: false,
     data: payload,
     error: null,
   }),
   // 실패 상태
-  loading: error => ({
+  error: (error) => ({
     loading: false,
     data: null,
     error,
@@ -53,7 +53,7 @@ export const handleAsyncActions = (type, key) => {
       case type:
         return {
           ...state,
-          [key]: reducerUtils.loading,
+          [key]: reducerUtils.loading(),
         };
       case SUCCESS:
         return {
