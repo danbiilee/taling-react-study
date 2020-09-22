@@ -1,7 +1,6 @@
 import React from 'react';
-import PostList from './PostList';
 
-function post({ post }) {
+function Post({ post }) {
   const { title, body } = post;
   return (
     <div>

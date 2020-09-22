@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPost } from '../modules/posts';
+import Post from '../components/Post';
 
 function PostContainer({ postId }) {
   const { data, loading, error } = useSelector((state) => state.posts.post);
