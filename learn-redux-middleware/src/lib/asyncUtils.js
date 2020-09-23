@@ -73,7 +73,7 @@ export const handleAsyncActions = (type, key, keepData = false) => {
 };
 
 // 포스트 재로딩 이슈 해결2. 함수 커스터마이징
-// 특정 id를 처리하는 Thunk 생성함수
+// 특정 id를 처리하는 Thunk 생성함수: action.meta 값으로 id 담기
 const defaultIdSelector = (param) => param;
 export const createPromiseThunkById = (
   type,
@@ -86,5 +86,50 @@ export const createPromiseThunkById = (
     // param이 객체 형태라면 param.id로 설정
     const id = idSelector(param);
     dispatch({ type, meta: id });
+    try {
+      const payload = await promiseCreator(param);
+      dispatch({ type: SUCCESS, payload, meta: id });
+    } catch (e) {
+      dispatch({ type: ERROR, error: true, payload: e, meta: id });
+    }
+  };
+};
+
+// id별로 액션을 처리하는 리듀서를 만들어주는 함수
+export const handleAsyncActionsById = (type, key, keepData = false) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+  return (state, action) => {
+    const id = action.meta;
+    switch (action.type) {
+      case type:
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            [id]: reducerUtils.loading(
+              // state[key][id]가 만들어져있지 않을 수도 있으므로 유효성 검사 후 data 조회
+              keepData ? state[key][id] && state[key][id].data : null
+            ),
+          },
+        };
+      case SUCCESS:
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            [id]: reducerUtils.success(action.payload),
+          },
+        };
+      case ERROR:
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            [id]: reducerUtils.error(action.payload),
+          },
+        };
+      default:
+        return state;
+    }
   };
 };
