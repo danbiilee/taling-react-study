@@ -47,3 +47,10 @@ export default function posts(state = initialState, action) {
       return state;
   }
 }
+
+// 홈 화면으로 가는 thunk
+// 3번째 인자를 사용하면 withExtraArgument에서 넣어준 값들을 사용할 수 있다.
+// getState를 사용하면 스토어 상태를 확인해 조건부로 이동하거나, 특정 API를 호출해 성공했을 때만 이동하는 형식으로 구현 가능
+export const goToHome = () => (dispatch, getState, { history }) => {
+  history.push('/');
+};
