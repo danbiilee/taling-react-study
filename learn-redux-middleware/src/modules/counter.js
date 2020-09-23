@@ -1,18 +1,16 @@
+// redux-thunk(increaseAsync, decreaseAsync) -> redux-saga(increaseSaga, decreaseSaga)
+
 // 액션 타입
 const INCREASE = 'counter/INCREASE';
 const DECREASE = 'counter/DECREASE';
+const INCREASE_ASYNC = 'counter/INCREASE_ASYNC';
+const DECREASE_ASYNC = 'counter/DECREASE_ASYNC';
 
 // 액션 생성 함수
 export const increase = () => ({ type: INCREASE });
 export const decrease = () => ({ type: DECREASE });
-
-// getState를 쓰지 않으면 굳이 파라미터로 받아올 필요 없음
-export const increaseAsync = () => dispatch => {
-  setTimeout(() => dispatch(increase()), 1000);
-};
-export const decreaseAsync = () => dispatch => {
-  setTimeout(() => dispatch(decrease()), 1000);
-};
+export const increaseAsync = () => ({ type: INCREASE_ASYNC });
+export const decreaseAsync = () => ({ type: DECREASE_ASYNC });
 
 // 초깃값
 const initialState = 0;
