@@ -5,14 +5,16 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import rootReducer from './modules';
+import rootReducer, { rootSaga } from './modules';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReduxThunk from 'redux-thunk';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import createSagaMiddleware from 'redux-saga';
 
 const customHistory = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   rootReducer,
@@ -20,10 +22,14 @@ const store = createStore(
   composeWithDevTools(
     applyMiddleware(
       ReduxThunk.withExtraArgument({ history: customHistory }),
+      sagaMiddleware,
       logger
     )
   )
-);
+); // 여러 개의 미들웨어 적용 가능
+
+// 루트 사가 실행: 스토어 생성 -> applyMiddleware 후에만 가능
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Router history={customHistory}>
