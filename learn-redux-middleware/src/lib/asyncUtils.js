@@ -1,3 +1,5 @@
+import { call, put } from 'redux-saga/effects';
+
 // Promise에 기반한 Thunk를 만들어주는 함수
 export const createPromiseThunk = (type, promiseCreator) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
@@ -12,6 +14,58 @@ export const createPromiseThunk = (type, promiseCreator) => {
       dispatch({ type: SUCCESS, payload }); // 성공
     } catch (e) {
       dispatch({ type: ERROR, error: e }); // 실패
+    }
+  };
+};
+
+// 포스트 재로딩 이슈 해결2. 함수 커스터마이징
+// 특정 id를 처리하는 Thunk 생성함수: action.meta 값으로 id 담기
+const defaultIdSelector = (param) => param;
+export const createPromiseThunkById = (
+  type,
+  promiseCreator,
+  idSelector = defaultIdSelector
+) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+
+  return (param) => async (dispatch) => {
+    // param이 객체 형태라면 param.id로 설정
+    const id = idSelector(param);
+    dispatch({ type, meta: id });
+    try {
+      const payload = await promiseCreator(param);
+      dispatch({ type: SUCCESS, payload, meta: id });
+    } catch (e) {
+      dispatch({ type: ERROR, error: true, payload: e, meta: id });
+    }
+  };
+};
+
+// Promise를 기다렸다가 결과를 디스패치하는 사가
+export const createPromiseSaga = (type, promiseCreator) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+  return function* saga(action) {
+    try {
+      // 재사용성을 위해 promiseCreator 파라미터에 action.payload 전달
+      const payload = yield call(promiseCreator, action.payload);
+      yield put({ type: SUCCESS, payload });
+    } catch (e) {
+      yield put({ type: ERROR, error: true, payload: e });
+    }
+  };
+};
+
+// 특정 id의 데이터를 조회하는 사가
+// API를 호출할 때 파라미터로 action.payload를 전달, action.meta를 id 값으로 설정
+export const createPromiseSagaById = (type, promiseCreator) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+  return function* saga(action) {
+    const id = action.meta;
+    try {
+      const payload = yield call(promiseCreator, action.payload);
+      yield put({ type: SUCCESS, payload, meta: id });
+    } catch (e) {
+      yield put({ type: SUCCESS, error: e, meta: id });
     }
   };
 };
@@ -68,29 +122,6 @@ export const handleAsyncActions = (type, key, keepData = false) => {
         };
       default:
         return state;
-    }
-  };
-};
-
-// 포스트 재로딩 이슈 해결2. 함수 커스터마이징
-// 특정 id를 처리하는 Thunk 생성함수: action.meta 값으로 id 담기
-const defaultIdSelector = (param) => param;
-export const createPromiseThunkById = (
-  type,
-  promiseCreator,
-  idSelector = defaultIdSelector
-) => {
-  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
-
-  return (param) => async (dispatch) => {
-    // param이 객체 형태라면 param.id로 설정
-    const id = idSelector(param);
-    dispatch({ type, meta: id });
-    try {
-      const payload = await promiseCreator(param);
-      dispatch({ type: SUCCESS, payload, meta: id });
-    } catch (e) {
-      dispatch({ type: ERROR, error: true, payload: e, meta: id });
     }
   };
 };
