@@ -14,7 +14,11 @@ import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
 
 const customHistory = createBrowserHistory();
-const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware({
+  context: {
+    history: customHistory,
+  },
+});
 
 const store = createStore(
   rootReducer,
@@ -28,7 +32,7 @@ const store = createStore(
   )
 ); // 여러 개의 미들웨어 적용 가능
 
-// 루트 사가 실행: 스토어 생성 -> applyMiddleware 후에만 가능
+// 루트 사가 실행: 사가 생성 -> applyMiddleware 된 스토어 생성 후에만 가능
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(

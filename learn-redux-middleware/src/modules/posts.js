@@ -5,7 +5,7 @@ import {
   handleAsyncActionsById,
   createPromiseSaga,
 } from '../lib/asyncUtils';
-import { takeEvery } from 'redux-saga/effects';
+import { getContext, takeEvery } from 'redux-saga/effects';
 
 /* 액션 타입 */
 // 포스트 여러 개 조회
@@ -16,26 +16,33 @@ const GET_POSTS_ERROR = 'posts/GET_POSTS_ERROR'; // 요청 실패
 const GET_POST = 'GET_POST';
 const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
 const GET_POST_ERROR = 'GET_POST_ERROR';
+const GO_TO_HOME = 'GO_TO_HOME';
 
 // redux-thunk -> redux-saga: 순수 액션 객체를 반환하는 액션 생성 함수로 변경
 export const getPosts = () => ({ type: GET_POSTS });
 export const getPost = (id) => ({ type: GET_POST, payload: id, meta: id }); // payload는 파라미터, meta는 리듀서에서 id를 알기 위함
+export const goToHome = () => ({ type: GO_TO_HOME });
 
 const getPostsSaga = createPromiseSaga(GET_POSTS, postsAPI.getPosts);
 const getPostSaga = createPromiseSaga(GET_POST, postsAPI.getPostById);
+function* goToHomeSaga() {
+  const history = yield getContext('history');
+  history.push('/');
+}
 
 // 사가들 합치기
 export function* postsSaga() {
   yield takeEvery(GET_POSTS, getPostsSaga);
   yield takeEvery(GET_POST, getPostSaga);
+  yield takeEvery(GO_TO_HOME, goToHomeSaga);
 }
 
 // 홈 화면으로 가는 thunk
 // 3번째 인자를 사용하면 withExtraArgument에서 넣어준 값들을 사용할 수 있다.
 // getState를 사용하면 스토어 상태를 확인해 조건부로 이동하거나, 특정 API를 호출해 성공했을 때만 이동하는 형식으로 구현 가능
-export const goToHome = () => (dispatch, getState, { history }) => {
-  history.push('/');
-};
+// export const goToHome = () => (dispatch, getState, { history }) => {
+//   history.push('/');
+// };
 
 // 반복되는 코드를 initial() 함수를 사용해 리팩토링
 const initialState = {
