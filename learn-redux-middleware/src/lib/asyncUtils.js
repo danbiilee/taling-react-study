@@ -56,7 +56,12 @@ export const createPromiseSaga = (type, promiseCreator) => {
 };
 
 // 특정 id의 데이터를 조회하는 사가
-// API를 호출할 때 파라미터로 action.payload를 전달, action.meta를 id 값으로 설정
+/* 
+	API를 호출할 때 파라미터로 action.payload를 전달
+		-> 액션 객체에서 사용할 함수의 인자
+	id 값으로는 action.meta를 설정
+		-> createPromiseSagaById, handleAsyncActiosById에서 사용할 인자 
+*/
 export const createPromiseSagaById = (type, promiseCreator) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
   return function* saga(action) {

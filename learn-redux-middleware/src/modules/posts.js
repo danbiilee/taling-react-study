@@ -1,12 +1,11 @@
 import * as postsAPI from '../api/posts';
 import {
-  createPromiseThunk,
   reducerUtils,
   handleAsyncActions,
-  createPromiseThunkById,
   handleAsyncActionsById,
+  createPromiseSaga,
 } from '../lib/asyncUtils';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 
 /* 액션 타입 */
 // 포스트 여러 개 조회
@@ -22,43 +21,8 @@ const GET_POST_ERROR = 'GET_POST_ERROR';
 export const getPosts = () => ({ type: GET_POSTS });
 export const getPost = (id) => ({ type: GET_POST, payload: id, meta: id }); // payload는 파라미터, meta는 리듀서에서 id를 알기 위함
 
-function* getPostsSaga() {
-  try {
-    // call: 특정 함수를 호출하고, 결과물 반환될 때까지 기다려줌
-    const posts = yield call(postsAPI.getPosts);
-    yield put({
-      type: GET_POSTS_SUCCESS,
-      payload: posts,
-    }); // 성공 액션 디스패치
-  } catch (e) {
-    yield put({
-      type: GET_POST_SUCCESS,
-      error: true,
-      payload: e,
-    }); // 실패 액션 디스패치
-  }
-}
-
-function* getPostSaga(action) {
-  const param = action.payload;
-  const id = action.meta;
-  try {
-    // API 함수에 전달하고 싶은 인자는 call 함수의 두번째 파라미터부터 순서대로 넣기
-    const post = yield call(postsAPI.getPostById, param);
-    yield put({
-      type: GET_POST_SUCCESS,
-      payload: post,
-      meta: id,
-    });
-  } catch (e) {
-    yield put({
-      type: GET_POST_ERROR,
-      error: true,
-      payload: e,
-      meta: id,
-    });
-  }
-}
+const getPostsSaga = createPromiseSaga(GET_POSTS, postsAPI.getPosts);
+const getPostSaga = createPromiseSaga(GET_POST, postsAPI.getPostById);
 
 // 사가들 합치기
 export function* postsSaga() {
