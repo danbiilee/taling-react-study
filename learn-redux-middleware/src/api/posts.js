@@ -1,15 +1,35 @@
-import axios from 'axios';
+// n 밀리세컨드 동안 기다리는 프로미스를 만들어주는 함수
+const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
-// 가짜 API 서버로 요청 보내는 비동기 함수
-// $ json-server ./data.json --port 4000
-// 웹팩 개발서버의 proxy 설정 후(CRA의 경우 package.json에서 설정) 도메인 생략 시,
-// 현재 페이지의 도메인(localhost:3000)을 가리키게 됨
+// 가짜 포스트 목록 데이터
+const posts = [
+  {
+    id: 1,
+    title: '리덕스 미들웨어를 배워봅시다',
+    body: '리덕스 미들웨어를 직접 만들어보면 이해하기 쉽죠.',
+  },
+  {
+    id: 2,
+    title: 'redux-thunk를 사용해봅시다',
+    body: 'redux-thunk를 사용해서 비동기 작업을 처리해봅시다!',
+  },
+  {
+    id: 3,
+    title: 'redux-saga도 사용해봅시다',
+    body:
+      '나중엔 redux-saga를 사용해서 비동기 작업을 처리하는 방법도 배워볼 거예요.',
+  },
+];
+
+// 포스트 목록을 가져오는 비동기 함수
 export const getPosts = async () => {
-  const response = await axios.get('/posts');
-  return response.data;
+  await sleep(500); // 0.5초 기다리기
+  console.log('getPosts', posts);
+  return posts;
 };
 
+// id로 포스트를 조회하는 비동기 함수
 export const getPostById = async (id) => {
-  const response = await axios.get(`/posts/${id}`);
-  return response.data;
+  await sleep(500);
+  return posts.find((post) => post.id === id);
 };
