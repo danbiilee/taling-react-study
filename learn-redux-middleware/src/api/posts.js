@@ -24,7 +24,6 @@ const posts = [
 // 포스트 목록을 가져오는 비동기 함수
 export const getPosts = async () => {
   await sleep(500); // 0.5초 기다리기
-  console.log('getPosts', posts);
   return posts;
 };
 

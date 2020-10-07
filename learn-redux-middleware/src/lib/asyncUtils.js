@@ -3,8 +3,6 @@ export const createPromiseThunk = (type, promiseCreator) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
 
   return (param) => async (dispatch) => {
-    console.log('createPromiseThunk param? ', param);
-
     try {
       dispatch({ type, param }); // 요청 시작
       const payload = await promiseCreator(param); // 결과의 이름을 payload로 통일
@@ -44,19 +42,20 @@ export const reducerUtils = {
   }),
 };
 
-export const handleAsyncActions = (type, key) => {
+export const handleAsyncActions = (type, key, keepData = false) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
   return (state, action) => {
+    // console.log('state[key]', state[key]); // state = posts모듈의 initialState
     switch (action.type) {
       case type:
         return {
           ...state,
-          [key]: reducerUtils.loading(),
+          [key]: reducerUtils.loading(keepData ? state[key].data : null),
         };
       case SUCCESS:
         return {
           ...state,
-          [key]: reducerUtils.success(action.paylod),
+          [key]: reducerUtils.success(action.payload),
         };
       case ERROR:
         return {
