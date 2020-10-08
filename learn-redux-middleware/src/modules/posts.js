@@ -21,6 +21,11 @@ const GET_POST_ERROR = 'posts/GET_POST_ERROR';
 export const getPosts = createPromiseThunk(GET_POSTS, postApi.getPosts);
 export const getPost = createPromiseThunkById(GET_POST, postApi.getPostById);
 
+// 세 번째 인자로 ReduxThunk.withExtraArgument로 넣어준 값들을 사용할 수 있다.
+export const goToHome = () => (dispatch, getState, { history }) => {
+  history.push('/');
+};
+
 // 초깃값
 const initialState = {
   posts: reducerUtils.initial(),

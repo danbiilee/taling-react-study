@@ -124,6 +124,8 @@ export const handleAsyncActionsById = (type, key, keepData = false) => {
             [id]: reducerUtils.error(action.error),
           },
         };
+      default:
+        return state;
     }
   };
 };
